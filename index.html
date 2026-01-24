@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isabella's 24th Birthday Party!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FDF6E3;
+            --warm-gold: #D4A853;
+            --dusty-rose: #C9A7A7;
+            --sage: #9CAF88;
+            --terracotta: #C67D5E;
+            --deep-plum: #5E4B56;
+            --soft-brown: #8B7355;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, #F5E6D3 50%, #E8D5C4 100%);
+            min-height: 100vh;
+            color: var(--deep-plum);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Decorative border frame */
+        .frame {
+            background: rgba(255, 255, 255, 0.7);
+            border: 3px solid var(--warm-gold);
+            border-radius: 20px;
+            padding: 3rem;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(94, 75, 86, 0.15);
+        }
+
+        .frame::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid var(--dusty-rose);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .emoji-header {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--terracotta);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--soft-brown);
+            font-weight: 500;
+        }
+
+        /* Decorative divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+            gap: 1rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            height: 2px;
+            width: 80px;
+            background: linear-gradient(90deg, transparent, var(--warm-gold), transparent);
+        }
+
+        .divider-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--terracotta);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--sage);
+            border-radius: 50%;
+        }
+
+        /* Info cards */
+        .info-card {
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.1), rgba(156, 175, 136, 0.1));
+            border-left: 4px solid var(--warm-gold);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 1rem;
+        }
+
+        .info-card strong {
+            color: var(--deep-plum);
+        }
+
+        .transport-note {
+            background: linear-gradient(135deg, rgba(156, 175, 136, 0.2), rgba(156, 175, 136, 0.1));
+            border-left-color: var(--sage);
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        /* Activities */
+        .activities {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .activity {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(212, 168, 83, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .activity:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: var(--terracotta);
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-desc {
+            font-size: 0.95rem;
+            color: var(--soft-brown);
+        }
+
+        /* Bring list */
+        .bring-list {
+            list-style: none;
+        }
+
+        .bring-list li {
+            padding: 0.8rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px dashed rgba(201, 167, 167, 0.5);
+        }
+
+        .bring-list li:last-child {
+            border-bottom: none;
+        }
+
+        .bring-list li::before {
+            content: '~';
+            position: absolute;
+            left: 0;
+            color: var(--warm-gold);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* RSVP Section */
+        .rsvp-section {
+            background: linear-gradient(135deg, var(--dusty-rose), #D4B5B5);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            margin-top: 2rem;
+        }
+
+        .rsvp-section h2 {
+            color: white;
+            justify-content: center;
+        }
+
+        .rsvp-section h2::before {
+            background: white;
+        }
+
+        .rsvp-emoji {
+            font-size: 3rem;
+            display: block;
+            margin: 1rem 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .rsvp-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .adhd-friendly {
+            background: rgba(255,255,255,0.2);
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid rgba(212, 168, 83, 0.3);
+        }
+
+        .closing {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--terracotta);
+        }
+
+        .heart {
+            color: var(--warm-gold);
+            font-size: 1.5rem;
+        }
+
+        /* Decorative flowers */
+        .flower-top-left,
+        .flower-top-right,
+        .flower-bottom-left,
+        .flower-bottom-right {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .flower-top-left { top: 20px; left: 20px; }
+        .flower-top-right { top: 20px; right: 20px; }
+        .flower-bottom-left { bottom: 20px; left: 20px; }
+        .flower-bottom-right { bottom: 20px; right: 20px; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .frame {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .emoji-header {
+                font-size: 2.5rem;
+            }
+
+            .flower-top-left,
+            .flower-top-right,
+            .flower-bottom-left,
+            .flower-bottom-right {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative corner flowers -->
+    <div class="flower-top-left">🌸</div>
+    <div class="flower-top-right">🌿</div>
+    <div class="flower-bottom-left">🌿</div>
+    <div class="flower-bottom-right">🌸</div>
+
+    <div class="container">
+        <div class="frame">
+            <header>
+                <div class="emoji-header">🎨 🎉</div>
+                <h1>Isabella's Birthday Party!</h1>
+                <p class="subtitle">You're invited to celebrate Isabella turning 24!</p>
+            </header>
+
+            <div class="divider">
+                <span class="divider-icon">✨</span>
+            </div>
+
+            <section>
+                <h2>When</h2>
+                <div class="info-card">
+                    <strong>Saturday 7th February</strong> from <strong>5pm</strong>
+                </div>
+            </section>
+
+            <section>
+                <h2>Where</h2>
+                <div class="info-card">
+                    <strong>Shae & Jye's place</strong><br>
+                    <em>(Address provided closer to the date)</em>
+                </div>
+                <div class="info-card transport-note">
+                    🚂 <strong>Transport:</strong> Maitland station is a 10 min drive — Keltan will be running shuttles, just let us know when you're arriving!
+                </div>
+            </section>
+
+            <div class="divider">
+                <span class="divider-icon">🎨</span>
+            </div>
+
+            <section>
+                <h2>What's happening</h2>
+                <div class="activities">
+                    <div class="activity">
+                        <div class="activity-title">🖼️ Portrait Painting</div>
+                        <div class="activity-desc">You'll paint the person sitting across from you (randomised seating, so you might make a new friend!)</div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-title">🎮 Animal Crossing: amiibo Festival</div>
+                        <div class="activity-desc">The Wii U is coming out!</div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-title">🎶 Vibes</div>
+                        <div class="activity-desc">Music, cozy ambience, good people</div>
+                    </div>
+                    <div class="activity">
+                        <div class="activity-title">🌱 Food</div>
+                        <div class="activity-desc">All vegan — Guzman run for dinner, Cam's making cob loaf</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider">
+                <span class="divider-icon">🌻</span>
+            </div>
+
+            <section>
+                <h2>What to Bring</h2>
+                <ul class="bring-list">
+                    <li><strong>Yourself + a plus one</strong> — just let me know who!</li>
+                    <li><strong>Your own drinks</strong> — communal alcohol and punch also available</li>
+                    <li><strong>Sleepover stuff</strong> if you want to stay the night</li>
+                </ul>
+            </section>
+
+            <section class="rsvp-section">
+                <h2>RSVP</h2>
+                <span class="rsvp-emoji">🎉</span>
+                <p class="rsvp-text">
+                    Just reply <strong>🎉</strong> and you're in!
+                </p>
+                <div class="adhd-friendly">
+                    ✨ This is designed to be ADHD-friendly — that's all you need to do for now. I'll follow up about the details later.
+                </div>
+                <p class="rsvp-text" style="margin-top: 1rem;">
+                    Bringing a plus one? Let me know who!
+                </p>
+            </section>
+
+            <footer>
+                <p class="closing">Can't wait to see you there! <span class="heart">💛</span></p>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
