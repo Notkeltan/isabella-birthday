@@ -550,6 +550,11 @@
         let tokenImgLoaded = false;
         tokenImg.onload = () => { tokenImgLoaded = true; };
 
+        // Background music
+        const bgMusic = new Audio('Assets/Isabella%20Jump/Sabrina%20Carpenter%20%E2%80%93%20Manchild%20%20%20Instrumental.mp3');
+        bgMusic.loop = true;
+        bgMusic.playbackRate = 2.0;
+
         // Platforms
         let platforms = [];
         const platformWidth = 70;
