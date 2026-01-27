@@ -907,9 +907,8 @@
                 wheelCtx.textAlign = 'right';
                 wheelCtx.textBaseline = 'middle';
 
-                const text = unrevealed[i] || '???';
-                const displayText = text.length > 12 ? text.substring(0, 10) + '...' : text;
-                wheelCtx.fillText(displayText, radius - 15, 0);
+                wheelCtx.font = 'bold 18px Quicksand';
+                wheelCtx.fillText('?', radius - 50, 0);
                 wheelCtx.restore();
             }
 
