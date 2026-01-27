@@ -968,10 +968,10 @@
                 } else {
                     // Spin complete
                     wheelSpinning = false;
-                    revealedGuests.push(winner);
+                    revealedGuests.push(winner.name);
                     saveState();
                     updateTokenDisplay();
-                    showPrize(winner);
+                    showPrize(winner.name, winner.desc);
                     updateGuestList();
                 }
             }
