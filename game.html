@@ -619,11 +619,11 @@
         }
 
         function spawnToken(platform) {
-            // 30% chance to spawn a token above a new platform
-            if (Math.random() < 0.3) {
+            // 15% chance to spawn a token anywhere at this height level
+            if (Math.random() < 0.15) {
                 collectibles.push({
-                    x: platform.x + platformWidth / 2 - tokenSize / 2,
-                    y: platform.y - 35 - Math.random() * 20,
+                    x: Math.random() * (350 - tokenSize),
+                    y: platform.y - Math.random() * 60,
                     collected: false,
                     bobOffset: Math.random() * Math.PI * 2
                 });
