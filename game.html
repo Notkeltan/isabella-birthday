@@ -691,17 +691,27 @@
                     platform.y += diff;
                 }
 
+                // Move tokens down
+                for (const token of collectibles) {
+                    token.y += diff;
+                }
+
                 // Remove platforms that are off screen
                 platforms = platforms.filter(p => p.y < 550);
+
+                // Remove collected or offscreen tokens
+                collectibles = collectibles.filter(t => !t.collected && t.y < 550);
 
                 // Add new platforms
                 while (platforms.length < 8) {
                     const highestY = Math.min(...platforms.map(p => p.y));
-                    platforms.push({
+                    const newPlatform = {
                         x: Math.random() * (350 - platformWidth),
                         y: highestY - 60 - Math.random() * 40,
                         type: 'normal'
-                    });
+                    };
+                    platforms.push(newPlatform);
+                    spawnToken(newPlatform);
                 }
             }
 
