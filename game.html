@@ -665,6 +665,21 @@
                 }
             }
 
+            // Check token collisions
+            for (const token of collectibles) {
+                if (!token.collected &&
+                    player.x + player.width > token.x &&
+                    player.x < token.x + tokenSize &&
+                    player.y + player.height > token.y &&
+                    player.y < token.y + tokenSize) {
+                    token.collected = true;
+                    collectedThisGame++;
+                    tokens++;
+                    saveState();
+                    updateTokenDisplay();
+                }
+            }
+
             // Scroll screen when player goes above middle
             if (player.y < 250) {
                 const diff = 250 - player.y;
