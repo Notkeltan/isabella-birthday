@@ -540,9 +540,15 @@
 
         // Player sprite
         const playerImg = new Image();
-        playerImg.src = 'Assets/Isabella Jump/tpose.jpeg';
+        playerImg.src = 'Assets/Isabella%20Jump/tpose.jpeg';
         let playerImgLoaded = false;
         playerImg.onload = () => { playerImgLoaded = true; };
+
+        // Token sprite
+        const tokenImg = new Image();
+        tokenImg.src = 'Assets/Isabella%20Jump/token.jpg';
+        let tokenImgLoaded = false;
+        tokenImg.onload = () => { tokenImgLoaded = true; };
 
         // Platforms
         let platforms = [];
@@ -764,31 +770,15 @@
                 // Bobbing animation
                 const bobY = Math.sin(time + token.bobOffset) * 3;
 
-                // Token glow
-                ctx.shadowColor = '#D4A853';
-                ctx.shadowBlur = 10;
-
-                // Outer coin
-                ctx.fillStyle = '#D4A853';
-                ctx.beginPath();
-                ctx.arc(token.x + tokenSize / 2, token.y + tokenSize / 2 + bobY, tokenSize / 2, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Inner shine
-                ctx.fillStyle = '#F0D78C';
-                ctx.beginPath();
-                ctx.arc(token.x + tokenSize / 2 - 2, token.y + tokenSize / 2 - 2 + bobY, tokenSize / 3, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Reset shadow
-                ctx.shadowBlur = 0;
-
-                // Token symbol
-                ctx.fillStyle = '#8B6914';
-                ctx.font = 'bold 12px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('★', token.x + tokenSize / 2, token.y + tokenSize / 2 + bobY);
+                if (tokenImgLoaded) {
+                    ctx.drawImage(tokenImg, token.x, token.y + bobY, tokenSize, tokenSize);
+                } else {
+                    // Fallback circle while loading
+                    ctx.fillStyle = '#D4A853';
+                    ctx.beginPath();
+                    ctx.arc(token.x + tokenSize / 2, token.y + tokenSize / 2 + bobY, tokenSize / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
             }
 
             // Draw player
