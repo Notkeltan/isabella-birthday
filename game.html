@@ -842,9 +842,10 @@
         function endGame() {
             gameRunning = false;
             const finalScore = Math.floor(score);
-            const tokensEarned = Math.floor(finalScore / 10); // 1 token per 10m
+            const heightBonus = Math.floor(finalScore / 10); // 1 token per 10m
+            const totalEarned = heightBonus + collectedThisGame;
 
-            tokens += tokensEarned;
+            tokens += heightBonus; // Collected tokens already added during gameplay
             saveState();
             updateTokenDisplay();
 
@@ -854,7 +855,9 @@
             }
 
             document.getElementById('finalScore').textContent = finalScore;
-            document.getElementById('tokensEarned').textContent = tokensEarned;
+            document.getElementById('tokensEarned').textContent = totalEarned;
+            document.getElementById('heightBonus').textContent = heightBonus;
+            document.getElementById('collectedBonus').textContent = collectedThisGame;
             document.getElementById('gameOverOverlay').classList.add('visible');
             document.getElementById('startBtn').textContent = 'Start';
             document.getElementById('startBtn').disabled = false;
