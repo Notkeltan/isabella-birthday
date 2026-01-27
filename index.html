@@ -361,37 +361,6 @@
             font-size: 1.5rem;
         }
 
-        /* Decorative flowers */
-        .flower-top-left,
-        .flower-top-right,
-        .flower-bottom-left,
-        .flower-bottom-right {
-            position: fixed;
-            font-size: 2rem;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .flower-top-left {
-            top: 20px;
-            left: 20px;
-        }
-
-        .flower-top-right {
-            top: 20px;
-            right: 20px;
-        }
-
-        .flower-bottom-left {
-            bottom: 20px;
-            left: 20px;
-        }
-
-        .flower-bottom-right {
-            bottom: 20px;
-            right: 20px;
-        }
-
         /* Responsive */
         @media (max-width: 600px) {
             .container {
@@ -410,10 +379,15 @@
                 font-size: 2.5rem;
             }
 
-            .flower-top-left,
-            .flower-top-right,
-            .flower-bottom-left,
-            .flower-bottom-right {
+            .sticker,
+            .floral-frame,
+            .floral-frame-br {
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sticker {
                 display: none;
             }
         }
