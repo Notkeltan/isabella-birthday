@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Party Game - Isabella's 24th!</title>
+    <title>Isabella Jump - Isabella's 24th!</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -395,7 +395,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>Party Game!</h1>
+            <h1>Isabella Jump!</h1>
             <div class="token-display">
                 <span class="token-icon">🪙</span>
                 <span id="tokenCount">0</span> tokens
@@ -531,12 +531,18 @@
         const player = {
             x: 175,
             y: 400,
-            width: 40,
-            height: 40,
+            width: 50,
+            height: 60,
             velocityX: 0,
             velocityY: 0,
             jumping: false
         };
+
+        // Player sprite
+        const playerImg = new Image();
+        playerImg.src = 'Assets/Isabella Jump/tpose.jpeg';
+        let playerImgLoaded = false;
+        playerImg.onload = () => { playerImgLoaded = true; };
 
         // Platforms
         let platforms = [];
@@ -785,42 +791,16 @@
                 ctx.fillText('★', token.x + tokenSize / 2, token.y + tokenSize / 2 + bobY);
             }
 
-            // Draw player (placeholder - cute blob)
-            ctx.fillStyle = '#C67D5E';
-            ctx.beginPath();
-            ctx.ellipse(
-                player.x + player.width / 2,
-                player.y + player.height / 2,
-                player.width / 2,
-                player.height / 2,
-                0, 0, Math.PI * 2
-            );
-            ctx.fill();
-
-            // Eyes
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.ellipse(player.x + 12, player.y + 15, 8, 10, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(player.x + 28, player.y + 15, 8, 10, 0, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Pupils
-            ctx.fillStyle = '#5E4B56';
-            ctx.beginPath();
-            ctx.arc(player.x + 12, player.y + 16, 4, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(player.x + 28, player.y + 16, 4, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Cute smile
-            ctx.strokeStyle = '#5E4B56';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(player.x + 20, player.y + 22, 8, 0.2, Math.PI - 0.2);
-            ctx.stroke();
+            // Draw player
+            if (playerImgLoaded) {
+                ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+            } else {
+                // Fallback circle while loading
+                ctx.fillStyle = '#C67D5E';
+                ctx.beginPath();
+                ctx.arc(player.x + player.width / 2, player.y + player.height / 2, player.width / 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
         function gameLoop() {
