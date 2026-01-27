@@ -869,7 +869,7 @@
         let wheelSpinning = false;
 
         function getUnrevealedGuests() {
-            return GUESTS.filter(g => !revealedGuests.includes(g));
+            return GUESTS.filter(g => !revealedGuests.includes(g.name));
         }
 
         function drawWheel() {
