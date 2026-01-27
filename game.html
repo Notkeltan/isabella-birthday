@@ -747,6 +747,41 @@
                 ctx.fill();
             }
 
+            // Draw tokens
+            const time = Date.now() / 200;
+            for (const token of collectibles) {
+                if (token.collected) continue;
+
+                // Bobbing animation
+                const bobY = Math.sin(time + token.bobOffset) * 3;
+
+                // Token glow
+                ctx.shadowColor = '#D4A853';
+                ctx.shadowBlur = 10;
+
+                // Outer coin
+                ctx.fillStyle = '#D4A853';
+                ctx.beginPath();
+                ctx.arc(token.x + tokenSize / 2, token.y + tokenSize / 2 + bobY, tokenSize / 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Inner shine
+                ctx.fillStyle = '#F0D78C';
+                ctx.beginPath();
+                ctx.arc(token.x + tokenSize / 2 - 2, token.y + tokenSize / 2 - 2 + bobY, tokenSize / 3, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Reset shadow
+                ctx.shadowBlur = 0;
+
+                // Token symbol
+                ctx.fillStyle = '#8B6914';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('★', token.x + tokenSize / 2, token.y + tokenSize / 2 + bobY);
+            }
+
             // Draw player (placeholder - cute blob)
             ctx.fillStyle = '#C67D5E';
             ctx.beginPath();
