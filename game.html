@@ -818,6 +818,7 @@
 
         function endGame() {
             gameRunning = false;
+            bgMusic.pause();
             const finalScore = Math.floor(score);
             const heightBonus = Math.floor(finalScore / 10); // 1 token per 10m
             const totalEarned = heightBonus + collectedThisGame;
