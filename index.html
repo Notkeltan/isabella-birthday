@@ -90,46 +90,6 @@
             transform: rotate(180deg);
         }
 
-        /* Floating stickers decoration */
-        .sticker {
-            position: fixed;
-            pointer-events: none;
-            opacity: 0.7;
-            z-index: 5;
-        }
-
-        .sticker-1 {
-            top: 15%;
-            left: 3%;
-            width: 80px;
-            animation: floatSticker 4s ease-in-out infinite;
-        }
-
-        .sticker-2 {
-            top: 40%;
-            right: 2%;
-            width: 90px;
-            animation: floatSticker 5s ease-in-out infinite 1s;
-        }
-
-        .sticker-3 {
-            bottom: 20%;
-            left: 2%;
-            width: 70px;
-            animation: floatSticker 4.5s ease-in-out infinite 0.5s;
-        }
-
-        .sticker-4 {
-            bottom: 35%;
-            right: 3%;
-            width: 75px;
-            animation: floatSticker 3.5s ease-in-out infinite 1.5s;
-        }
-
-        @keyframes floatSticker {
-            0%, 100% { transform: translateY(0) rotate(-5deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-        }
 
         /* Header */
         header {
