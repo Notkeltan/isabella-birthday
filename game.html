@@ -811,6 +811,8 @@
             gameRunning = true;
             document.getElementById('startBtn').textContent = 'Playing...';
             document.getElementById('startBtn').disabled = true;
+            bgMusic.currentTime = 0;
+            bgMusic.play();
             gameLoop();
         }
 
