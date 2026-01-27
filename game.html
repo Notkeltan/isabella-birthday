@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Party Game - Isabella's 24th!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Quicksand:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FDF6E3;
+            --warm-gold: #D4A853;
+            --dusty-rose: #C9A7A7;
+            --sage: #9CAF88;
+            --terracotta: #C67D5E;
+            --deep-plum: #5E4B56;
+            --soft-brown: #8B7355;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, #F5E6D3 50%, #E8D5C4 100%);
+            min-height: 100vh;
+            color: var(--deep-plum);
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--terracotta);
+        }
+
+        .token-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--warm-gold);
+        }
+
+        .token-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid var(--warm-gold);
+            background: white;
+            border-radius: 10px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--deep-plum);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--warm-gold);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Game Section */
+        .game-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: 0 5px 20px rgba(94, 75, 86, 0.15);
+            border: 3px solid var(--warm-gold);
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 100%);
+            touch-action: none;
+        }
+
+        .game-ui {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.8rem;
+            padding: 0 0.5rem;
+        }
+
+        .score-display {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--deep-plum);
+        }
+
+        .game-btn {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            background: var(--sage);
+            color: white;
+            border-radius: 25px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .game-btn:active {
+            transform: scale(0.95);
+        }
+
+        .game-over-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(94, 75, 86, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .game-over-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .game-over-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .game-over-content h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--terracotta);
+            margin-bottom: 1rem;
+        }
+
+        .tokens-earned {
+            font-size: 2rem;
+            color: var(--warm-gold);
+            margin: 1rem 0;
+        }
+
+        /* Wheel Section */
+        .wheel-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(94, 75, 86, 0.15);
+            border: 3px solid var(--warm-gold);
+            text-align: center;
+        }
+
+        .wheel-cost {
+            font-size: 1rem;
+            color: var(--soft-brown);
+            margin-bottom: 1rem;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 1rem;
+        }
+
+        #wheelCanvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            z-index: 10;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+        }
+
+        .spin-btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            background: linear-gradient(135deg, var(--terracotta), var(--dusty-rose));
+            color: white;
+            border-radius: 30px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(198, 125, 94, 0.4);
+        }
+
+        .spin-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .spin-btn:not(:disabled):active {
+            transform: scale(0.95);
+        }
+
+        /* Guest Reveal */
+        .revealed-guests {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px dashed var(--dusty-rose);
+        }
+
+        .revealed-guests h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--terracotta);
+            margin-bottom: 1rem;
+        }
+
+        .guest-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .guest-tag {
+            background: linear-gradient(135deg, var(--sage), #B5C9A8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .mystery-count {
+            margin-top: 1rem;
+            color: var(--soft-brown);
+            font-style: italic;
+        }
+
+        /* Prize Popup */
+        .prize-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(94, 75, 86, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .prize-popup.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .prize-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 320px;
+            animation: bounceIn 0.5s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .prize-content h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--terracotta);
+            margin-bottom: 0.5rem;
+        }
+
+        .prize-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--deep-plum);
+            margin: 1rem 0;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.2), rgba(156, 175, 136, 0.2));
+            border-radius: 10px;
+        }
+
+        .prize-close-btn {
+            padding: 0.8rem 2rem;
+            border: 2px solid var(--warm-gold);
+            background: white;
+            color: var(--deep-plum);
+            border-radius: 25px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        /* Back link */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--soft-brown);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: var(--terracotta);
+        }
+
+        /* Instructions */
+        .instructions {
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.1), rgba(156, 175, 136, 0.1));
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--soft-brown);
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Party Game!</h1>
+            <div class="token-display">
+                <span class="token-icon">🪙</span>
+                <span id="tokenCount">0</span> tokens
+            </div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="game">Jump!</button>
+            <button class="tab-btn" data-tab="wheel">Spin Wheel</button>
+        </div>
+
+        <!-- Game Tab -->
+        <div id="game" class="tab-content active">
+            <div class="instructions">
+                Tilt your phone or tap left/right to move!<br>
+                Jump as high as you can to earn tokens!
+            </div>
+            <div class="game-container">
+                <canvas id="gameCanvas" width="350" height="500"></canvas>
+                <div class="game-ui">
+                    <div class="score-display">Height: <span id="currentScore">0</span>m</div>
+                    <button class="game-btn" id="startBtn">Start</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wheel Tab -->
+        <div id="wheel" class="tab-content">
+            <div class="wheel-container">
+                <div class="wheel-cost">Cost: 5 tokens per spin</div>
+                <div class="wheel-wrapper">
+                    <div class="wheel-pointer">▼</div>
+                    <canvas id="wheelCanvas" width="280" height="280"></canvas>
+                </div>
+                <button class="spin-btn" id="spinBtn">Spin!</button>
+
+                <div class="revealed-guests">
+                    <h3>Revealed Guests</h3>
+                    <div class="guest-list" id="guestList">
+                        <span style="color: var(--soft-brown); font-style: italic;">Spin to reveal!</span>
+                    </div>
+                    <div class="mystery-count" id="mysteryCount"></div>
+                </div>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Invitation</a>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div class="game-over-overlay" id="gameOverOverlay">
+        <div class="game-over-content">
+            <h2>Game Over!</h2>
+            <p>You reached <span id="finalScore">0</span>m</p>
+            <div class="tokens-earned">
+                +<span id="tokensEarned">0</span> 🪙
+            </div>
+            <button class="game-btn" id="playAgainBtn">Play Again</button>
+        </div>
+    </div>
+
+    <!-- Prize Popup -->
+    <div class="prize-popup" id="prizePopup">
+        <div class="prize-content">
+            <h2>Guest Revealed!</h2>
+            <div class="prize-name" id="prizeName"></div>
+            <p id="prizeMessage"></p>
+            <button class="prize-close-btn" id="prizeCloseBtn">Nice!</button>
+        </div>
+    </div>
+
+    <script>
+        // ========== GUEST LIST (Placeholder - replace with real names) ==========
+        const GUESTS = [
+            "Mystery Guest 1",
+            "Mystery Guest 2",
+            "Mystery Guest 3",
+            "Mystery Guest 4",
+            "Mystery Guest 5",
+            "Mystery Guest 6",
+            "Mystery Guest 7",
+            "Mystery Guest 8"
+        ];
+
+        // ========== STATE MANAGEMENT ==========
+        let tokens = parseInt(localStorage.getItem('partyTokens') || '0');
+        let revealedGuests = JSON.parse(localStorage.getItem('revealedGuests') || '[]');
+
+        function saveState() {
+            localStorage.setItem('partyTokens', tokens.toString());
+            localStorage.setItem('revealedGuests', JSON.stringify(revealedGuests));
+        }
+
+        function updateTokenDisplay() {
+            document.getElementById('tokenCount').textContent = tokens;
+            document.getElementById('spinBtn').disabled = tokens < 5 || revealedGuests.length >= GUESTS.length;
+        }
+
+        // ========== TAB NAVIGATION ==========
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // ========== DOODLE JUMP GAME ==========
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Make canvas responsive
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const width = Math.min(container.clientWidth - 32, 350);
+            const ratio = 500 / 350;
+            canvas.style.width = width + 'px';
+            canvas.style.height = (width * ratio) + 'px';
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Game state
+        let gameRunning = false;
+        let score = 0;
+        let highScore = parseInt(localStorage.getItem('jumpHighScore') || '0');
+
+        // Player
+        const player = {
+            x: 175,
+            y: 400,
+            width: 40,
+            height: 40,
+            velocityX: 0,
+            velocityY: 0,
+            jumping: false
+        };
+
+        // Platforms
+        let platforms = [];
+        const platformWidth = 70;
+        const platformHeight = 15;
+
+        // Controls
+        let tiltX = 0;
+        let touchSide = 0; // -1 left, 0 none, 1 right
+
+        // Device orientation
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', (e) => {
+                if (e.gamma !== null) {
+                    tiltX = e.gamma / 30; // Normalize tilt
+                    tiltX = Math.max(-1, Math.min(1, tiltX));
+                }
+            });
+        }
+
+        // Touch controls
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            touchSide = x < rect.width / 2 ? -1 : 1;
+        });
+
+        canvas.addEventListener('touchend', () => {
+            touchSide = 0;
+        });
+
+        // Keyboard controls (for testing)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') touchSide = -1;
+            if (e.key === 'ArrowRight') touchSide = 1;
+        });
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') touchSide = 0;
+        });
+
+        function initGame() {
+            player.x = 175 - player.width / 2;
+            player.y = 400;
+            player.velocityX = 0;
+            player.velocityY = -12;
+            score = 0;
+            platforms = [];
+
+            // Create initial platforms
+            for (let i = 0; i < 8; i++) {
+                platforms.push({
+                    x: Math.random() * (350 - platformWidth),
+                    y: 450 - i * 70,
+                    type: 'normal'
+                });
+            }
+            // Ensure starting platform under player
+            platforms[0].x = 175 - platformWidth / 2;
+            platforms[0].y = 450;
+        }
+
+        function updateGame() {
+            if (!gameRunning) return;
+
+            // Apply controls
+            const moveSpeed = 0.5;
+            if (touchSide !== 0) {
+                player.velocityX += touchSide * moveSpeed;
+            } else if (Math.abs(tiltX) > 0.1) {
+                player.velocityX += tiltX * moveSpeed;
+            }
+
+            // Friction
+            player.velocityX *= 0.9;
+
+            // Gravity
+            player.velocityY += 0.4;
+
+            // Move player
+            player.x += player.velocityX;
+            player.y += player.velocityY;
+
+            // Wrap around screen
+            if (player.x > 350) player.x = -player.width;
+            if (player.x < -player.width) player.x = 350;
+
+            // Check platform collisions (only when falling)
+            if (player.velocityY > 0) {
+                for (const platform of platforms) {
+                    if (player.x + player.width > platform.x &&
+                        player.x < platform.x + platformWidth &&
+                        player.y + player.height > platform.y &&
+                        player.y + player.height < platform.y + platformHeight + 10) {
+                        player.velocityY = -13;
+                        player.jumping = true;
+                    }
+                }
+            }
+
+            // Scroll screen when player goes above middle
+            if (player.y < 250) {
+                const diff = 250 - player.y;
+                player.y = 250;
+                score += diff / 10;
+
+                // Move platforms down
+                for (const platform of platforms) {
+                    platform.y += diff;
+                }
+
+                // Remove platforms that are off screen
+                platforms = platforms.filter(p => p.y < 550);
+
+                // Add new platforms
+                while (platforms.length < 8) {
+                    const highestY = Math.min(...platforms.map(p => p.y));
+                    platforms.push({
+                        x: Math.random() * (350 - platformWidth),
+                        y: highestY - 60 - Math.random() * 40,
+                        type: 'normal'
+                    });
+                }
+            }
+
+            // Game over
+            if (player.y > 520) {
+                endGame();
+            }
+
+            document.getElementById('currentScore').textContent = Math.floor(score);
+        }
+
+        function drawGame() {
+            // Clear canvas
+            ctx.fillStyle = 'linear-gradient(180deg, #87CEEB 0%, #E0F6FF 100%)';
+            ctx.clearRect(0, 0, 350, 500);
+
+            // Draw background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+            gradient.addColorStop(0, '#87CEEB');
+            gradient.addColorStop(1, '#E0F6FF');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 350, 500);
+
+            // Draw platforms
+            for (const platform of platforms) {
+                ctx.fillStyle = '#9CAF88';
+                ctx.beginPath();
+                ctx.roundRect(platform.x, platform.y, platformWidth, platformHeight, 5);
+                ctx.fill();
+                ctx.fillStyle = '#7A9468';
+                ctx.beginPath();
+                ctx.roundRect(platform.x, platform.y + platformHeight - 4, platformWidth, 4, [0, 0, 5, 5]);
+                ctx.fill();
+            }
+
+            // Draw player (placeholder - cute blob)
+            ctx.fillStyle = '#C67D5E';
+            ctx.beginPath();
+            ctx.ellipse(
+                player.x + player.width / 2,
+                player.y + player.height / 2,
+                player.width / 2,
+                player.height / 2,
+                0, 0, Math.PI * 2
+            );
+            ctx.fill();
+
+            // Eyes
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.ellipse(player.x + 12, player.y + 15, 8, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(player.x + 28, player.y + 15, 8, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Pupils
+            ctx.fillStyle = '#5E4B56';
+            ctx.beginPath();
+            ctx.arc(player.x + 12, player.y + 16, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(player.x + 28, player.y + 16, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Cute smile
+            ctx.strokeStyle = '#5E4B56';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(player.x + 20, player.y + 22, 8, 0.2, Math.PI - 0.2);
+            ctx.stroke();
+        }
+
+        function gameLoop() {
+            updateGame();
+            drawGame();
+            if (gameRunning) {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function startGame() {
+            initGame();
+            gameRunning = true;
+            document.getElementById('startBtn').textContent = 'Playing...';
+            document.getElementById('startBtn').disabled = true;
+            gameLoop();
+        }
+
+        function endGame() {
+            gameRunning = false;
+            const finalScore = Math.floor(score);
+            const tokensEarned = Math.floor(finalScore / 10); // 1 token per 10m
+
+            tokens += tokensEarned;
+            saveState();
+            updateTokenDisplay();
+
+            if (finalScore > highScore) {
+                highScore = finalScore;
+                localStorage.setItem('jumpHighScore', highScore.toString());
+            }
+
+            document.getElementById('finalScore').textContent = finalScore;
+            document.getElementById('tokensEarned').textContent = tokensEarned;
+            document.getElementById('gameOverOverlay').classList.add('visible');
+            document.getElementById('startBtn').textContent = 'Start';
+            document.getElementById('startBtn').disabled = false;
+        }
+
+        document.getElementById('startBtn').addEventListener('click', startGame);
+        document.getElementById('playAgainBtn').addEventListener('click', () => {
+            document.getElementById('gameOverOverlay').classList.remove('visible');
+            startGame();
+        });
+
+        // Initial draw
+        initGame();
+        drawGame();
+
+        // ========== SPINNING WHEEL ==========
+        const wheelCanvas = document.getElementById('wheelCanvas');
+        const wheelCtx = wheelCanvas.getContext('2d');
+        const wheelColors = ['#C67D5E', '#9CAF88', '#D4A853', '#C9A7A7', '#5E4B56', '#8B7355'];
+
+        let wheelRotation = 0;
+        let wheelSpinning = false;
+
+        function getUnrevealedGuests() {
+            return GUESTS.filter(g => !revealedGuests.includes(g));
+        }
+
+        function drawWheel() {
+            const centerX = 140;
+            const centerY = 140;
+            const radius = 130;
+
+            wheelCtx.clearRect(0, 0, 280, 280);
+
+            const unrevealed = getUnrevealedGuests();
+            const segments = unrevealed.length > 0 ? unrevealed.length : 1;
+            const anglePerSegment = (Math.PI * 2) / segments;
+
+            for (let i = 0; i < segments; i++) {
+                const startAngle = wheelRotation + i * anglePerSegment;
+                const endAngle = startAngle + anglePerSegment;
+
+                // Draw segment
+                wheelCtx.beginPath();
+                wheelCtx.moveTo(centerX, centerY);
+                wheelCtx.arc(centerX, centerY, radius, startAngle, endAngle);
+                wheelCtx.closePath();
+                wheelCtx.fillStyle = wheelColors[i % wheelColors.length];
+                wheelCtx.fill();
+                wheelCtx.strokeStyle = 'white';
+                wheelCtx.lineWidth = 2;
+                wheelCtx.stroke();
+
+                // Draw text
+                wheelCtx.save();
+                wheelCtx.translate(centerX, centerY);
+                wheelCtx.rotate(startAngle + anglePerSegment / 2);
+                wheelCtx.fillStyle = 'white';
+                wheelCtx.font = 'bold 11px Quicksand';
+                wheelCtx.textAlign = 'right';
+                wheelCtx.textBaseline = 'middle';
+
+                const text = unrevealed[i] || '???';
+                const displayText = text.length > 12 ? text.substring(0, 10) + '...' : text;
+                wheelCtx.fillText(displayText, radius - 15, 0);
+                wheelCtx.restore();
+            }
+
+            // Center circle
+            wheelCtx.beginPath();
+            wheelCtx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+            wheelCtx.fillStyle = '#FDF6E3';
+            wheelCtx.fill();
+            wheelCtx.strokeStyle = '#D4A853';
+            wheelCtx.lineWidth = 3;
+            wheelCtx.stroke();
+        }
+
+        function spinWheel() {
+            if (wheelSpinning || tokens < 5) return;
+
+            const unrevealed = getUnrevealedGuests();
+            if (unrevealed.length === 0) return;
+
+            tokens -= 5;
+            saveState();
+            updateTokenDisplay();
+
+            wheelSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+
+            // Pick random winner
+            const winnerIndex = Math.floor(Math.random() * unrevealed.length);
+            const winner = unrevealed[winnerIndex];
+
+            // Calculate final rotation
+            const segments = unrevealed.length;
+            const anglePerSegment = (Math.PI * 2) / segments;
+            // We want the winner segment to be at the top (pointing to the arrow)
+            // Arrow points down, so we need segment to be at -PI/2 (top)
+            const targetAngle = -Math.PI / 2 - winnerIndex * anglePerSegment - anglePerSegment / 2;
+            const spins = 5 + Math.random() * 3; // 5-8 full spins
+            const finalRotation = spins * Math.PI * 2 + targetAngle;
+
+            // Animate spin
+            const startRotation = wheelRotation;
+            const spinDuration = 4000;
+            const startTime = Date.now();
+
+            function animateSpin() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / spinDuration, 1);
+
+                // Easing function (ease out cubic)
+                const eased = 1 - Math.pow(1 - progress, 3);
+
+                wheelRotation = startRotation + (finalRotation - startRotation) * eased;
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateSpin);
+                } else {
+                    // Spin complete
+                    wheelSpinning = false;
+                    revealedGuests.push(winner);
+                    saveState();
+                    updateTokenDisplay();
+                    showPrize(winner);
+                    updateGuestList();
+                }
+            }
+
+            animateSpin();
+        }
+
+        function showPrize(name) {
+            document.getElementById('prizeName').textContent = name;
+            document.getElementById('prizeMessage').textContent = "They're coming to the party!";
+            document.getElementById('prizePopup').classList.add('visible');
+        }
+
+        document.getElementById('prizeCloseBtn').addEventListener('click', () => {
+            document.getElementById('prizePopup').classList.remove('visible');
+            drawWheel(); // Redraw without the revealed guest
+        });
+
+        document.getElementById('spinBtn').addEventListener('click', spinWheel);
+
+        function updateGuestList() {
+            const guestListEl = document.getElementById('guestList');
+            const mysteryCountEl = document.getElementById('mysteryCount');
+
+            if (revealedGuests.length === 0) {
+                guestListEl.innerHTML = '<span style="color: var(--soft-brown); font-style: italic;">Spin to reveal!</span>';
+            } else {
+                guestListEl.innerHTML = revealedGuests
+                    .map(g => `<span class="guest-tag">${g}</span>`)
+                    .join('');
+            }
+
+            const remaining = GUESTS.length - revealedGuests.length;
+            if (remaining > 0) {
+                mysteryCountEl.textContent = `${remaining} mystery guest${remaining !== 1 ? 's' : ''} remaining...`;
+            } else {
+                mysteryCountEl.textContent = "You've revealed everyone!";
+            }
+        }
+
+        // Initialize
+        updateTokenDisplay();
+        updateGuestList();
+        drawWheel();
+    </script>
+</body>
+
+</html>
