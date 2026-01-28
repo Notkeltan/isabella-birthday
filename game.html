@@ -548,11 +548,33 @@
         let playerImgLoaded = false;
         playerImg.onload = () => { playerImgLoaded = true; };
 
-        // Token sprite
-        const tokenImg = new Image();
-        tokenImg.src = 'Assets/Isabella%20Jump/token.png';
-        let tokenImgLoaded = false;
-        tokenImg.onload = () => { tokenImgLoaded = true; };
+        // Animal token sprites
+        const animalImages = [];
+        const animalPaths = [
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_001.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_002.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_003.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_004.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_005.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_006.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_007.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_008.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_009.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_010.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_014.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_015.png',
+            'Assets/Isabella%20Jump/Animals/Phone%20Cover%20Stickers_asset_016.png'
+        ];
+        let animalsLoaded = 0;
+        animalPaths.forEach((path, i) => {
+            const img = new Image();
+            img.src = path;
+            img.onload = () => { animalsLoaded++; };
+            animalImages.push(img);
+        });
+        function getRandomAnimalIndex() {
+            return Math.floor(Math.random() * animalImages.length);
+        }
 
         // Background music
         const bgMusic = new Audio('Assets/Isabella%20Jump/Sabrina%20Carpenter%20%E2%80%93%20Manchild%20%20%20Instrumental.mp3');
