@@ -829,10 +829,10 @@
             deathSound.currentTime = 0;
             deathSound.play();
             const finalScore = Math.floor(score);
-            const heightBonus = Math.floor(finalScore / 10); // 1 token per 10m
-            const totalEarned = heightBonus + collectedThisGame;
+            const heightBonus = 0; // No bonus for height
+            const totalEarned = collectedThisGame;
 
-            tokens += heightBonus; // Collected tokens already added during gameplay
+            // Collected tokens already added during gameplay
             saveState();
             updateTokenDisplay();
 
