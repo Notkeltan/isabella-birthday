@@ -806,8 +806,9 @@
                 // Bobbing animation
                 const bobY = Math.sin(time + token.bobOffset) * 3;
 
-                if (tokenImgLoaded) {
-                    ctx.drawImage(tokenImg, token.x, token.y + bobY, tokenSize, tokenSize);
+                const animalImg = animalImages[token.imgIndex];
+                if (animalImg && animalImg.complete) {
+                    ctx.drawImage(animalImg, token.x, token.y + bobY, tokenSize, tokenSize);
                 } else {
                     // Fallback circle while loading
                     ctx.fillStyle = '#D4A853';
