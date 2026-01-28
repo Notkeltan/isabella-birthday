@@ -650,8 +650,8 @@
                 };
                 platforms.push(platform);
 
-                // 6% chance to spawn a token anywhere on screen at this height
-                if (i > 0 && Math.random() < 0.06) {
+                // 15% chance to spawn a token anywhere on screen at this height
+                if (i > 0 && Math.random() < 0.15) {
                     collectibles.push({
                         x: Math.random() * (350 - tokenSize),
                         y: platform.y - 20 - Math.random() * 50,
